@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Asian Restaurant Closure in the Pandemic</title>
+   	<script src="https://d3js.org/d3.v4.min.js"></script>
+   	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+
+
+    <style>
+
+    body {
+      background-color: #444444;
+    }
+
+
+
+    .leaflet-container{
+      background: #fff;
+    }
+
+
+		p {
+			font-family: 'Open Sans', sans-serif;
+			color:#353536;
+			font-weight:300;
+      background-color: yellow;
+		}
+
+		svg {
+			width:100%;
+			height:600px;
+			padding-left:5%;
+			padding-right:50px;
+		}
+
+		h1 {
+			font-size:48px;
+			font-weight:200;
+      font-weight: bold;
+			line-height:1.3;
+      background-color: yellow;
+		}
+
+    h2 {
+      font-size: 24px;
+      font-weight: bolder;
+      line-height: 1;
+      background-color: yellow;
+    }
+
+    #firstvisualdiv, #secondvisualdiv, #thirdvisualdiv {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 180px;
+    }
+
+        .map{
+          max-width: 640px;
+          max-height: 480px;
+          position: relative;
+          opacity: 0;
+          transition: opacity 1.2s;
+          -webkit-transition: opacity 1.2s;
+        }
+
+
+    .iframe{
+      max-width: 100%;
+      max-height: 100%;
+      position: sticky;
+      opacity: 0;
+      transition: opacity 1.2s;
+      -webkit-transition: opacity 1.2s;
+    }
+
+    .img{
+     max-width: 640px;
+     max-height: 480px;
+     position: sticky;
+     opacity: 0;
+     transition: opacity 1.2s;
+     -webkit-transition: opacity 1.2s;
+
+    }
+
+
+    .text1opacity, .text2opacity {
+         font-size:30px;
+         fill:blue;
+         opacity:0;
+         transition: opacity 0.8s;
+          -webkit-transition: opacity 0.8s;
+         }
+
+    .active {
+      opacity:1;
+    }
+
+    .deactive {
+            opacity:0;
+        }
+
+
+	</style>
+
+  <script type="text/JavaScript">
+  mapboxgl.accessToken = ' pk.eyJ1IjoicHJhdGhpdG8iLCJhIjoiY2tnZ2g5aTRzMTN1MTM5bGp2aGNnd3Y2biJ9._DWLGqqHMTD12E7SC-bkyQ
+';
+  // Initialize the basemap
+  var map = new mapboxgl.Map({
+  container: 'map', // container element id
+  style: ' mapbox://styles/prathito/ckgvedjfv1tqu19kx75tsoivo ',
+  center: [-73.986033,40.748759], // initial map center in [lon, lat]
+  zoom: 14
+  });
+
+  map.on('load', function() {
+
+    map.addLayer({
+      id: 'asianrestaurant-colfs5',
+      type: 'circle',
+      source: 'asianrestaurant-colfs5',
+      paint: {
+        'circle-radius': 1,
+        'circle-color': 'f4f958'
+        'circle-opacity': 0.6
+      },
+      });
+
+    });
+  </script>
+</head>
+<body>
+  <main role="main" class="container" >
+     <div class="row">
+     	<div class="col-6">
+     		<br><br>
+     		<h1>Asian Restaurant Closure in the Pandemic</h1>
+     		<hr>
+     	</div>
+     </div>
+     <div class="row">
+       <div class="col-4">
+         <br><br>
+         <p>Website author: Prathito Wisambodhi.</p>
+         <p>Team members: Prathito Wisambodhi, Jianyu Li, Zhen Chen</p>
+         <br><br><br><br>
+         <h2>Why is this important?</h2>
+         <br><br><br><br>
+         <p id="text1">The restaurant industry is essential to New York City’s social and economic fabric.
+         More than 60 percent of NYC resident restaurant workers were immigrants in 2018. 44% of the workers were Hispanic and 20% were Asian.
+         By August 2020, employment in the restaurant industry was still only 55 percent of its level in before the pandemic.</p>
+         <br><br>
+         <p id="text2">According to <a href="https://www.womply.com/blog/the-types-of-restaurants-most-impacted-by-covid-19/">Womply's</a> data,
+           Chinese restaurants are being hit the hardest. The study showed that 55% of small and local businesses owners reported anxiety over
+           business survival if sales stop for 1-3 months and restaurant businesses are less likely to survive disruptions. The study also looked
+         at the disruptions experienced by restaurants with offerings that are commonly associated with take-out, such as fast food, Chinese, Thai, and Indian cuisine.</p>
+         <br><br>
+         <p id="text3">The study analyzed credit card transaction data in restaurants between January 1 and March 1, 2020. They identified a restaurant as closed
+         if the restaurant did not have any transaction for at least three days in a row. Furthermore, they also categorized restaurants that are fully operating
+       via food delivery services under 'closed', since the transaction is being taken care of by a third party. </p>
+         <br><br>
+         <p id ="text4">However, another metrics showed a different result. According to <a href="https://www.safegraph.com/data-examples/covid19-commerce-patterns">Safegraph</a>
+         , Chinese restaurants are experiencing decrease in foot traffic just as bad as Mexican, Italian, Korean, and Japanese restaurants. However, this data seems to be highly
+       impacted by the shelter-in-place regulation that many American cities employed during the early days of the pandemic. Since the research analyzed foot traffic to businesses
+     and restaurants, the reduced number might be driven by the fact that people are self-quarantining in this period of time.</p>
+       </div>
+       <div class="col-8">
+         <div id="firstvisualdiv">
+           <br><br><br>
+           <p class="text1opacity"> More than 60 percent of NYC resident restaurant workers were immigrants. </p>
+           <p class="text2opacity"> Chinese Restaurants are closing at a far higher rate than similarly-grouped restaurant. </p>
+           <img class="img" id="img1" src="/img/ericchan.jpeg">
+           <br><br>
+         </div>
+       </div>
+       <div class="col-4">
+         <br><br>
+         <h2 id="rq">Research Questions</h2>
+         <br><br><br><br>
+         <p id="text5">How are Asian restaurants doing during the pandemic in NYC?
+         Visualizations: map, bar chart</p>
+         <br><br>
+         <p id="text6">Where are the Asian restaurant closures in NYC?
+         Visualizations: map, bar charts, heatmap</p>
+         <br><br>
+         <p id="text7">How are the restaurants in prominent neighborhoods are doing compared to lower income neighborhoods?
+           Visualizations: choropleth map, scatter plot</p>
+         <br><br>
+         <h2 id=rq2>Where are the Asian restaurants in NYC?</h2>
+         <br><br><br><br>
+         <p id="text8">According to the DOHMH New York City Restaurant Inspection Results from the NYC Open Data
+           , here is the map of Asian restaurants location in New York City.
+           We plan to subset only the active restaurant data taken
+           before the travel ban with Pandas (January 31, 2020)
+         </p>
+         <br><br><br><br>
+         <h2 id="rq3">How are they doing?</h2>
+         <br><br><br><br>
+         <p id="text9">Various aggregate data sources tell us different two different information. However, when we look into the data at New York City level, we could understand a
+          more nuanced information regarding Asian restaurant's disruption in New York City. </p><br>
+         <br><br><br><br><br>
+         <p><i>Image courtesy of: Eric Chan and ABC7 New York</i></p> 
+         <br><br><br><br><br>
+       </div>
+       <div class="col-8">
+         <div id="secondvisualdiv">
+           <img class="img" id="img2" src="./img/vandal.jpg">
+           <br><br><br>
+         </div>
+         <div id="thirdvisualdiv">
+           <map>
+             <br><br><br><br><br><br><br>
+             <iframe id="map2"
+             src='https://api.mapbox.com/styles/v1/prathito/ckgvedjfv1tqu19kx75tsoivo.html?fresh=true&title=copy&access_token=pk.eyJ1IjoicHJhdGhpdG8iLCJhIjoiY2tnZ2g5aTRzMTN1MTM5bGp2aGNnd3Y2biJ9._DWLGqqHMTD12E7SC-bkyQ' width='100%' height='400px'>
+             </iframe>
+           </map>
+         </div>
+       </div>
+     </div>
+  </main><!-- /.container -->
+</body>
+
+<script type="text/javascript">
+
+var controller = new ScrollMagic.Controller();
+  new ScrollMagic.Scene({triggerElement: "#text1"})
+    .setClassToggle(".text1opacity", "active")
+    .addTo(controller);
+
+  new ScrollMagic.Scene({triggerElement: "#text2"})
+    .setClassToggle(".text2opacity", "active")
+    .addTo(controller);
+
+  new ScrollMagic.Scene({triggerElement: "#text3"})
+      .setClassToggle("#img1", "active")
+      .addTo(controller);
+
+  new ScrollMagic.Scene({triggerElement: "#rq"})
+    .setClassToggle("#img1", "deactive")
+    .addTo(controller);
+
+  new ScrollMagic.Scene({triggerElement: "#rq"})
+        .setClassToggle("#img2", "active")
+        .addTo(controller);
+
+  new ScrollMagic.Scene({triggerElement: "#text6"})
+      .setClassToggle("#img2", "deactive")
+      .addTo(controller);
+
+  new ScrollMagic.Scene({triggerElement: "#text3"})
+        .setClassToggle(".text1opacity", "deactive")
+        .addTo(controller);
+
+  new ScrollMagic.Scene({triggerElement: "#text3"})
+    .setClassToggle(".text2opacity", "deactive")
+    .addTo(controller);
+
+  new ScrollMagic.Scene({triggerElement: "#text3"})
+    .setClassToggle(".text3opacity", "active")
+    .addTo(controller);
+
+    new ScrollMagic.Scene({triggerElement: "#text7"})
+      .setClassToggle(".map", "active")
+      .addTo(controller);
+
+      new ScrollMagic.Scene({triggerElement: "#text8"})
+        .setClassToggle(".map", "deactive")
+        .addTo(controller);
+
+
+</script>
+</body>
+</html>
