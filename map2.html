@@ -1,0 +1,159 @@
+<html lang='eng'>
+    <head>
+        <title>
+            Choropleth Map
+        </title>
+        <script src = "https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+        <script src = "https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+        <script src = "https://d3js.org/topojson.v2.min.js"></script>
+        <!-- add a style here -->
+        <style>
+        body{
+          position:absolute;
+          font-family: "Proxima Nova", "Montserrat", sans-serif;
+        }
+
+        h1, h2 {
+          position: absolute;
+          left: 10px;
+          font-size: 1.3em;
+          font-weight: 100;
+        }
+
+        h2{
+          top: 30px;
+          font-size: 1em;
+        }
+
+        </style>
+
+    </head>
+
+    <body>
+        <!-- page elemets and content go here. -->
+        <h1>Choropleth map</h1>
+        <h2></h2>
+
+        <script>
+            //Our D3 code will go here.
+
+            //Load the data:
+            var boston_topourl = "https://gist.githubusercontent.com/cesandoval/09b2e39263c748fbcb84b927cecc7c46/raw/ab71d3638efd2545ec99c2651c6f2ddcea9d2a07/boston.json"
+            var boston_311url = "https://raw.githubusercontent.com/brookefzy/BigData2020/master/pset6/boston_311.csv"
+
+
+            //Create SVG Canvas
+            //Width and height of the whole visualization
+            var width = 1200
+            var height = 900
+
+            //Set Projection Parameters
+            var albersProjection = d3.geoAlbers()
+                                     .scale(190000)
+                                     .rotate([71.057, 0])
+                                     .center([0, 42.313])
+                                     .translate([width/2, height/2]);
+
+            //Create GeoPath function that uses built-in D3 functionality to turn
+            //lat/lon coordinates into screen coordinates;
+            var geopath = d3.geoPath()
+                      .projection(albersProjection);
+
+            var bostwitter = d3.map();
+            tooltip = d3.select("body")
+                        .append("div")
+                        .style("position", "absolute")
+                        .style("z-index", "1")
+                        .style("visibility", "hidden")
+                        .style("background", "white")
+                        .style("opacity", "0.6")
+                        .style("padding", "5px")
+                        .style("font-family", "'Open Sans', sans-serif")
+                        .style("font-size", "12px");
+
+            //Create SVG canvas
+            var svg = d3.select("body")
+                        .append("svg")
+                        .attr("width", width)
+                        .attr("height", height);
+
+            //Creating variable x//
+            var x = d3.scaleLinear()
+                      .domain([0, 5.5])
+                      .rangeRound([600, 860]);
+            //Append empty placeholder g element to the SVG. g will contain geometry elements
+            var g = svg.append("g")
+                        .attr("class", "key")
+                        .attr("transform", "translate(0,40)");
+
+            //Legend
+            g.selectAll('rect')
+              .data(color.range().map(function(d){
+                d = color.invertExtent(d);
+                if(d[0] == null) d[0] = x.domain()[0];
+                if(d[1] == null) d[1] = x.domain()[1];
+                return d;
+              }))
+
+
+                ////////////////////
+
+            //Load data with promise
+            var promises = [d3.json(boston_topourl),
+                            d3.csv(boston_311url, function(d) {
+                              bostwitter.set(d.Name, [+d.twitter, +d.tot_count]);
+                            })]
+
+            Promise.all(promises).then(ready)
+
+            var color = d3.scaleQuantize()
+                          .domain([0, 5.5])
+                          .range(d3.schemePurples[9])
+
+
+            function ready([boston]) {
+              svg.append("g")
+                  .selectAll("path")
+                  .data(topojson.feature(boston, boston.objects.boston_neigh).features)
+                  .enter()
+                  .append("path")
+                  .style("fill", function(d){return color(d.twitter = Math.log(bostwitter.get(d.properties.Name)[0]));})
+                  .style("stroke", "white", "1")
+                  .attr("d", geopath)
+                  .on("mouseover", function(d){
+                    tooltip.style("visibility", "visible")
+                    .text(d.properties.Name + ": " + ((bostwitter.get(d.properties.Name)[0]/bostwitter.get(d.properties.Name)[1])*10000).toFixed(2) +"%")
+                    .style("opacity", "0.7")
+                  })
+                  .on("mousemove", function(d){
+                    tooltip.style("top", (d3.event.pageY-10)+"px")
+                            .style("left",(d3.event.pageX+10)+"px")
+                            .text(d.properties.Name + ": " + ((bostwitter.get(d.properties.Name)[0]/bostwitter.get(d.properties.Name)[1])*10000).toFixed(2) +"%")
+                            .style("opacity", "0.7")
+                  })
+                  .on("mouseout", function(d){
+                    tooltip.style("visibility", "hidden")
+                  })
+                  .append("title");
+            }
+
+            .enter().append("rect")
+            .attr("height", 8)
+            .attr("x", function(d) {return x(d[0]);})
+            .attr("width", function(d) {return x(d[1]) - x(d[0]);})
+            .attr("fill", function(d) {return color(d[0]);});
+
+            g.append("text")
+            .attr("class","caption")
+            .attr("x", x.range()[0])
+            .attr("y" , -6)
+            .attr("fill", "#000")
+            .attr("text-anchor", "start")
+            .attr("font-weight", "bold")
+            .text("Complaints");
+
+
+
+        </script>
+    </body>
+</html>
