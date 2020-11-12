@@ -87,13 +87,13 @@
                         .attr("transform", "translate(0,40)");
 
             //Legend
-            g.selectAll('rect')
+            /*g.selectAll('rect')
               .data(color.range().map(function(d){
                 d = color.invertExtent(d);
                 if(d[0] == null) d[0] = x.domain()[0];
                 if(d[1] == null) d[1] = x.domain()[1];
                 return d;
-              }))
+              }))*/
 
 
                 ////////////////////
@@ -136,7 +136,7 @@
                   })
                   .append("title");
             }
-
+/*
             .enter().append("rect")
             .attr("height", 8)
             .attr("x", function(d) {return x(d[0]);})
@@ -150,7 +150,7 @@
             .attr("fill", "#000")
             .attr("text-anchor", "start")
             .attr("font-weight", "bold")
-            .text("Complaints");
+            .text("Complaints");*/
 
 
 
