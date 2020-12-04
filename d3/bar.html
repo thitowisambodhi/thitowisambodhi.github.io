@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Add 2 buttons -->
+<button onclick="update(nyc)">Three Chinatowns</button>
+<button onclick="update(nycper)">Three Chinatowns Percentage</button>
+<button onclick="update(manhattan)">Manhattan</button>
+<button onclick="update(manhattanper)">Manhattan Percentage</button>
+<button onclick="update(brooklyn)">Brooklyn</button>
+<button onclick="update(brooklynper)">Brooklyn Percentage</button>
+<button onclick="update(flushing)">Flushing</button>
+<button onclick="update(flushingper)">Flushing Percentage</button>
+
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+
+<script>
+// creating color
+
+// create data_set
+var nyc = [
+   {group: "Chinese", value: 466},
+   {group: "Asian", value: 256},
+   {group: "Other", value: 605}
+];
+
+var nycper = [
+{group: "Chinese", value: 35},
+{group: "Asian", value: 19},
+{group: "Other", value: 46}
+];
+
+var brooklyn = [
+   {group: "Chinese", value: 121},
+   {group: "Asian", value: 54},
+   {group: "Other", value: 219}
+];
+
+var brooklynper = [
+{group: "Chinese", value: 31},
+{group: "Asian", value: 14},
+{group: "Other", value: 55}
+];
+
+var manhattan = [
+   {group: "Chinese", value: 144},
+   {group: "Asian", value: 95},
+   {group: "Other", value: 271}
+];
+
+var manhattanper = [
+{group: "Chinese", value: 28},
+{group: "Asian", value: 19},
+{group: "Other", value: 53}
+];
+
+var flushing = [
+   {group: "Chinese", value: 201},
+   {group: "Asian", value: 107},
+   {group: "Other", value: 113}
+];
+
+var manhattanper = [
+{group: "Chinese", value: 48},
+{group: "Asian", value: 25},
+{group: "Other", value: 27}
+];
+
+// set the dimensions and margins of the graph
+var margin = {top: 30, right: 30, bottom: 70, left: 60},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// Initialize the X axis
+var x = d3.scaleBand()
+  .range([ 0, width ])
+  .padding(0.2);
+var xAxis = svg.append("g")
+  .attr("transform", "translate(0," + height + ")")
+
+// Initialize the Y axis
+var y = d3.scaleLinear()
+  .range([ height, 0]);
+var yAxis = svg.append("g")
+  .attr("class", "myYaxis")
+
+
+// A function that create / update the plot for a given variable:
+function update(data) {
+
+  // Update the X axis
+  x.domain(data.map(function(d) { return d.group; }))
+  xAxis.call(d3.axisBottom(x))
+
+  // Update the Y axis
+  y.domain([0, d3.max(data, function(d) { return d.value }) ]);
+  yAxis.transition().duration(1000).call(d3.axisLeft(y));
+
+  // Create the u variable
+  var u = svg.selectAll("rect")
+    .data(data)
+
+  u
+    .enter()
+    .append("rect") // Add a new rect for each new elements
+    .merge(u) // get the already existing elements as well
+    .transition() // and apply changes to all of them
+    .duration(1000)
+      .attr("x", function(d) { return x(d.group); })
+      .attr("y", function(d) { return y(d.value); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.value); })
+      .attr("fill", "#69b3a2")
+
+  // If less group in the new dataset, I delete the ones not in use anymore
+  u
+    .exit()
+    .remove()
+}
+
+// Initialize the plot with the first dataset
+update(nyc)
+
+</script>
