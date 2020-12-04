@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #d1d1d1;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+  stroke-width: 0.4px;
+}
+
+.y.axis path {
+  display: none;
+  stroke-width: 0.4px;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+div.tooltip {
+  position: absolute;
+  padding: 10px;
+  background: #ffffff;
+  border: 0px;
+  border-radius: 0px;
+  pointer-events: none;
+  font-size: 11px;
+  color: #000;
+  line-height: 16px;
+  border: .5px solid #d4d4d4;
+}
+
+	</style>
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+</head>
+
+<body>
+<script>
+///manhattan
+var maindata = [{"date":"2020-03-16","Chinese":100.0,"Asian":100.0,"Other":100.0},{"date":"2020-03-23","Chinese":53.41,"Asian":85.09,"Other":59.87},{"date":"2020-03-30","Chinese":44.38,"Asian":69.86,"Other":78.48},{"date":"2020-04-06","Chinese":40.39,"Asian":51.97,"Other":46.55},{"date":"2020-04-13","Chinese":43.3,"Asian":50.05,"Other":49.27},{"date":"2020-04-20","Chinese":48.85,"Asian":65.5,"Other":65.63},{"date":"2020-04-27","Chinese":53.1,"Asian":70.61,"Other":70.72},{"date":"2020-05-04","Chinese":51.93,"Asian":72.84,"Other":61.82},{"date":"2020-05-11","Chinese":59.78,"Asian":77.32,"Other":67.7},{"date":"2020-05-18","Chinese":71.11,"Asian":84.77,"Other":75.96},{"date":"2020-05-25","Chinese":71.93,"Asian":91.69,"Other":134.84},{"date":"2020-06-01","Chinese":75.23,"Asian":87.65,"Other":114.46},{"date":"2020-06-08","Chinese":96.4,"Asian":111.61,"Other":101.24}];
+var cities = []
+var parseDate = d3.time.format("%Y-%m-%d").parse;
+maindata.forEach(function(d) {
+  cities.push(d3.keys(d).filter(function(key) {
+      return key !== "date" //&& key !== "maxLength";
+    }));
+  });
+cities = d3.set(d3.merge(cities)).values();
+console.log(cities)
+var myData = [];
+var allValues = [];
+var allDates =[];
+cities.forEach(function(city){
+	var cityData = {};
+	cityData.name = city;
+	cityData.values = [];
+	maindata.forEach(function(md){
+		if (md[city]){
+		  allValues.push(md[city])
+			allDates.push(parseDate(md.date))
+			cityData.values.push({date: parseDate(md.date), value: md[city]})
+		}
+	})
+	myData.push(cityData)
+});
+
+var that = this;
+var deepClonedCopy = jQuery.extend(true, {}, maindata);
+var data;
+data = $.map(deepClonedCopy, function(el) {
+  return el
+});
+var margin = {
+    top: 15,
+    right: 30,
+    bottom: 20,
+    left: 30
+  },
+  width = 960 - margin.left - margin.right,
+  height = 500 - margin.top - margin.bottom;
+if (data.length >= 1) {
+  var parseDate = d3.time.format("%Y-%m-%d");
+
+  var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 80);
+
+  var x = d3.time.scale()
+    .domain(d3.extent(allDates))
+    .range([0, width]);
+
+  var y = d3.scale.linear()
+	  .domain([0, d3.max(allValues)])
+    .range([height, 0]);
+
+  var color = d3.scale.category10()
+	.range(['#FD7E14', '#999999', '#CCCCCC', '#e78ac3', '#a6d854', '#ffd92f']);
+
+
+  var xAxis = d3.svg.axis()
+    .scale(x)
+//    .orient("bottom").ticks(6);
+
+  var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left").ticks(4).tickSize(-width, 0, 0);
+
+  var line = d3.svg.line()
+    .x(function(d) {
+      return x(d.date);
+    })
+    .y(function(d) {
+      return y(d.value);
+    });
+
+  var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+  svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
+
+  var wsf = svg.selectAll(".wsf")
+    .data(myData)
+    .enter().append("g")
+    .attr("class", "wsf");
+
+  wsf.append("path")
+    .attr("class", "line")
+    .attr("d", function(d) {
+      return line(d.values);
+    })
+    .style("stroke", "#c2c2c2")
+    .style("stroke", function(d) {
+      return color(d.name);
+    });
+
+  wsf.selectAll(".dot")
+    .data(function(d) {
+      return d.values;
+    })
+    .enter().append("circle")
+    .attr("class", "dot")
+    .attr("r", 2)
+    .attr("cx", function(d) {
+      return x(d.date);
+    })
+    .attr("cy", function(d) {
+      return y(d.value);
+    })
+    .attr("stroke", function(d) {
+      return color(this.parentNode.__data__.name)
+    })
+    .attr("fill", "#ffffff")
+    .attr("fill-opacity", 1)
+    .attr("stroke-width", 2)
+    .on("mouseover", function(d) {
+      formatDate = d3.time.format("%Y-%M-%D");
+      div.transition().duration(100).style("opacity", 0.9);
+      div.html("On the week of " +d.date.toDateString() +"<br/> "+ this.parentNode.__data__.name + " restaurants had " +d.value+"% of the visitors they had<br/> on the week of March 16th." )
+        .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY + 30) + "px").attr('r', 8);
+        d3.select(this).attr('r', 6).style("fill","black").attr("stroke-width", 4);
+      }).on("mouseout", function(d) {
+        div.transition().duration(500).style("opacity", 0)
+        d3.select(this).attr('r', 2).style("fill", "white").attr("stroke-width", 2);
+      });
+
+  var legend = svg.selectAll(".legend")
+    .data(cities)
+    .enter().append("g")
+    .attr("class", "legend")
+    .attr("transform", function(d, i) {
+      return "translate(0," + i * 15 + ")";
+    });
+
+  legend.append("rect")
+    .attr("x", width - 18)
+    .attr("y", 408)
+    .attr("width", 18)
+    .attr("height", 4)
+    .style("fill", function(d) {
+      return color(d);
+    });
+
+  legend.append("text")
+    .attr("x", width - 24)
+    .attr("y", 410)
+    .attr("dy", ".30em")
+    .style("text-anchor", "end")
+    .text(function(d) {
+      return d;
+    });
+}
+
+</script>
+</body>
+</html>
