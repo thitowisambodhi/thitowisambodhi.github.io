@@ -67,7 +67,7 @@ function bar_plot(url){
       .call(d3.axisBottom(x).tickSize(0));
     // Add Y axis
     var y = d3.scaleLinear()
-      .domain([0, 700])
+      .domain([0, 600])
       .range([ height, 0 ]);
     svg.append("g")
       .call(d3.axisLeft(y));
@@ -100,22 +100,48 @@ function bar_plot(url){
         .attr("width", xSubgroup.bandwidth())
         .attr("height", function(d) { return height - y(d.value); })
         .attr("fill", function(d) { return color(d.key); });
+
+        // text label for the y axis
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .style("font", "11px sans-serif")
+            .text("Number of open restaurants");
+
+
+        //Creating legend
+        // select the svg area
+svg.append("g")
+
+                // Handmade legend
+        svg.append("circle").attr("cx",width - 10).attr("cy",height - 350).attr("r", 6).style("fill", "#FD7E14")
+        svg.append("circle").attr("cx",width - 10).attr("cy",height - 330).attr("r", 6).style("fill", "#999999")
+        svg.append("circle").attr("cx",width - 10).attr("cy",height - 310).attr("r", 6).style("fill", "#cccccc")
+
+        svg.append("text").attr("x", width - 20).attr("y", height - 350).text("Chinese restaurants").style("font", "10px sans-serif").attr("text-anchor","end").attr("alignment-baseline","middle")
+        svg.append("text").attr("x", width - 20).attr("y", height - 330).text("Other Asian restaurants").style("font", "10px sans-serif").attr("text-anchor","end").attr("alignment-baseline","middle")
+        svg.append("text").attr("x", width - 20).attr("y", height - 310).text("Other restaurants").style("font", "10px sans-serif").attr("text-anchor","end").attr("alignment-baseline","middle")
+
+
       });
 };
 d3.select("#jan2020").on("click", function(){
-  d3.selectAll("#my_dataviz > *").remove();
+  d3.selectAll("g").remove();
 
   bar_plot(jan_url)
 });
 
 d3.select("#mar2020").on("click", function(){
-  d3.selectAll("#my_dataviz > *").remove();
+  d3.selectAll("g").remove();
 
   bar_plot(mar_url)
 });
 
 d3.select("#jun2020").on("click", function(){
-  d3.selectAll("#my_dataviz > *").remove();
+  d3.selectAll("g").remove();
 
   bar_plot(jun_url)
 });
