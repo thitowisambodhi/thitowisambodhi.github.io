@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>D3 Transitions</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+
+ 	</style>
+</head>
+
+<body>
+  <button id="jan">January 2020</button>
+  <button id="mar">March 2020</button>
+  <button id="jun">June 2020</button>
+
+
+  	<div id="main">
+
+  	</div>
+  <script type="text/javascript">
+  // Width and height of the SVG object
+    let w = 800;
+    let h = 400;
+
+  // Circle radius of Chinatown's performance
+  var all_jan = 100;
+  var m_mar = 88;
+  var m_jun = 86;
+  var b_mar = 86;
+  var b_jun = 93;
+  var f_mar = 76
+  var f_jun = 79;
+  var margin = {top: 20, right: 160, bottom: 35, left: 30};
+
+      //Make an SVG Container
+      var svgContainer = d3.select("div#main")
+     	 .append("svg")
+     	 .attr("width", w)
+     	 .attr("height", h)
+
+      // Add text
+      svgContainer
+      .append("text")
+      .attr("x", all_jan + margin.left)
+      .attr("y", all_jan + margin.top)
+      .attr("text-anchor","middle")
+      .style("font", "11px sans-serif")
+      .text("Manhattan");
+      svgContainer
+      .append("text")
+      .attr("x", 380)
+      .attr("y", all_jan + margin.top)
+      .style("font", "11px sans-serif")
+      .attr("text-anchor","middle")
+      .text("Sunset Park, Brooklyn");
+      svgContainer
+      .append("text")
+      .attr("x", 630)
+      .attr("y", all_jan + margin.top)
+      .style("font", "11px sans-serif")
+      .attr("text-anchor","middle")
+      .text("Flushing, Queens");
+
+// Caption text for March
+      var m_m_text = svgContainer
+      .append("text")
+      .attr("x", all_jan + margin.left)
+      .attr("y", all_jan + margin.top * 7)
+      .attr("text-anchor","middle")
+      .style("font", "11px sans-serif")
+      .text("88% Chinese restaurants were open in March")
+      .attr("opacity",0);
+
+      var b_m_text = svgContainer
+      .append("text")
+      .attr("x", 380)
+      .attr("y", all_jan + margin.top * 7)
+      .style("font", "11px sans-serif")
+      .attr("text-anchor","middle")
+      .text("86% Chinese restaurants were open in March")
+      .attr("opacity",0);
+
+      var f_m_text = svgContainer
+      .append("text")
+      .attr("x", 630)
+      .attr("y", all_jan + margin.top * 7)
+      .style("font", "11px sans-serif")
+      .attr("text-anchor","middle")
+      .text("76% Chinese restaurants were open in March")
+      .attr("opacity",0);
+
+      // Caption text for June
+            var m_j_text = svgContainer
+            .append("text")
+            .attr("x", all_jan + margin.left)
+            .attr("y", all_jan + margin.top * 7.6)
+            .attr("text-anchor","middle")
+            .style("font", "11px sans-serif")
+            .text("86% Chinese restaurants were open in June")
+            .style("fill","red")
+            .attr("opacity",0);
+
+            var b_j_text = svgContainer
+            .append("text")
+            .attr("x", 380)
+            .attr("y", all_jan + margin.top * 7.6)
+            .style("font", "11px sans-serif")
+            .attr("text-anchor","middle")
+            .text("93% Chinese restaurants were open in March")
+            .style("fill","green")
+
+            .attr("opacity",0);
+
+            var f_j_text = svgContainer
+            .append("text")
+            .attr("x", 630)
+            .attr("y", all_jan + margin.top * 7.6)
+            .style("font", "11px sans-serif")
+            .attr("text-anchor","middle")
+            .text("79% Chinese restaurants were open in June")
+            .style("fill","green")
+
+            .attr("opacity",0);
+
+
+      // Draw the circle
+      var circ_man_jan = svgContainer.append("circle")
+     	 .attr("cx", all_jan + margin.left)
+     	 .attr("cy", all_jan + margin.top)
+     	 .attr("r", all_jan)
+       .attr("fill", "orange")
+       .attr("opacity", 0.2)
+       .attr("text","January");
+
+      var circ_man_mar = svgContainer.append("circle")
+      	 .attr("cx", all_jan + margin.left)
+      	 .attr("cy", all_jan + margin.top)
+      	 .attr("r", 0)
+         .attr("fill", "orange")
+         .attr("opacity", 0.3)
+         .attr("stroke-dasharray", 2);
+
+       var circ_man_jun = svgContainer.append("circle")
+    	  .attr("cx", all_jan + margin.left)
+        .attr("cy", all_jan + margin.top)
+        .attr("r", 0)
+        .attr("stroke", "black")
+        .attr("fill-opacity", 0)
+        .attr("stroke-dasharray", "2");
+
+        // Cerating Brooklyn circles
+        var circ_b_jan = svgContainer.append("circle")
+       	 .attr("cx", 380)
+       	 .attr("cy", all_jan + margin.top)
+       	 .attr("r", all_jan)
+         .attr("fill", "orange")
+         .attr("opacity", 0.2);
+
+         var circ_b_mar = svgContainer.append("circle")
+        	 .attr("cx", 380)
+        	 .attr("cy", all_jan + margin.top)
+        	 .attr("r", 0)
+           .attr("fill", "orange")
+           .attr("opacity", 0.3);
+
+         var circ_b_jun = svgContainer.append("circle")
+      	  .attr("cx", 380)
+          .attr("cy", all_jan + margin.top)
+          .attr("r", 0)
+          .attr("stroke", "black")
+          .attr("fill-opacity", 0)
+          .attr("stroke-dasharray", "2");
+
+          // Cerating Flushing circles
+          var circ_f_jan = svgContainer.append("circle")
+         	 .attr("cx", 630)
+         	 .attr("cy", all_jan + margin.top)
+         	 .attr("r", all_jan)
+           .attr("fill", "orange")
+           .attr("opacity", 0.2);
+
+           var circ_f_mar = svgContainer.append("circle")
+          	 .attr("cx", 630)
+          	 .attr("cy", all_jan + margin.top)
+          	 .attr("r", 0)
+             .attr("fill", "orange")
+             .attr("opacity", 0.3);
+
+           var circ_f_jun = svgContainer.append("circle")
+        	  .attr("cx", 630)
+            .attr("cy", all_jan + margin.top)
+            .attr("r", 0)
+            .attr("stroke", "black")
+            .attr("fill-opacity", 0)
+            .attr("stroke-dasharray", "2");
+
+
+  // Set up the Jan button to show March circles
+  d3.select("#jan").on("click", function() {
+	   circ_man_mar
+    	.transition()
+      .attr("r", 0);
+
+      circ_man_jun
+     	.transition()
+      .attr("r", 0);
+
+      circ_b_mar
+      .transition()
+      .attr("r", 0);
+
+      circ_b_jun
+      .transition()
+      .attr("r", 0);
+
+      circ_f_mar
+      .transition()
+      .attr("r", 0);
+
+      circ_f_jun
+      .transition()
+      .attr("r", 0);
+
+      m_m_text.transition().attr("opacity",0);
+      b_m_text.transition().attr("opacity",0);
+      f_m_text.transition().attr("opacity",0);
+      m_j_text.transition().attr("opacity",0);
+      b_j_text.transition().attr("opacity",0);
+      f_j_text.transition().attr("opacity",0);
+
+        })
+
+    // Set up the Mar button to show March circles
+    d3.select("#mar").on("click", function() {
+  	circ_man_mar
+    	.transition()
+      .attr("r", m_mar);
+
+      circ_man_jun
+     	.transition()
+      .attr("r", 0);
+
+    circ_b_mar
+      .transition()
+      .attr("r", b_mar);
+
+      circ_b_jun
+      .transition()
+      .attr("r", 0);
+
+    circ_f_mar
+      .transition()
+      .attr("r", f_mar);
+
+      circ_f_jun
+      .transition()
+      .attr("r", 0);
+
+      m_m_text.transition().attr("opacity",1);
+      b_m_text.transition().attr("opacity",1);
+      f_m_text.transition().attr("opacity",1);
+      m_j_text.transition().attr("opacity",0);
+      b_j_text.transition().attr("opacity",0);
+      f_j_text.transition().attr("opacity",0);
+    })
+
+    // Set up the June button to show Jun circles
+    d3.select("#jun").on("click", function() {
+    circ_man_jun
+      .transition()
+      .attr("r", m_jun);
+
+    circ_b_jun
+      .transition()
+      .attr("r", b_jun);
+
+      circ_f_jun
+        .transition()
+        .attr("r", f_jun);
+
+        m_m_text.transition().attr("opacity",0.3);
+        b_m_text.transition().attr("opacity",0.3);
+        f_m_text.transition().attr("opacity",0.3);
+        m_j_text.transition().attr("opacity",1);
+        b_j_text.transition().attr("opacity",1);
+        f_j_text.transition().attr("opacity",1);
+
+
+    });
+
+  </script>
+  </body>
+  </html>
