@@ -129,19 +129,19 @@ svg.append("g")
       });
 };
 d3.select("#jan2020").on("click", function(){
-  d3.selectAll("g").remove();
+  d3.selectAll("#my_dataviz > *").remove();
 
   bar_plot(jan_url)
 });
 
 d3.select("#mar2020").on("click", function(){
-  d3.selectAll("g").remove();
+  d3.selectAll("#my_dataviz > *").remove();
 
   bar_plot(mar_url)
 });
 
 d3.select("#jun2020").on("click", function(){
-  d3.selectAll("g").remove();
+  d3.selectAll("#my_dataviz > *").remove();
 
   bar_plot(jun_url)
 });
