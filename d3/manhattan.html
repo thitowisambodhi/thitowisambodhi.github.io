@@ -181,7 +181,7 @@ if (data.length >= 1) {
       div.transition().duration(100).style("opacity", 0.9);
       div.html("On the week of " +d.date.toDateString() +"<br/> "+ this.parentNode.__data__.name + " restaurants had " +d.value+"% of the visitors they had<br/> on the week of March 16th." )
         .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY + 30) + "px").attr('r', 8);
-        d3.select(this).attr('r', 6).style("fill","black").attr("stroke-width", 4);
+        d3.select(this).attr('r', 12).style("fill","black").attr("stroke-width", 4);
       }).on("mouseout", function(d) {
         div.transition().duration(500).style("opacity", 0)
         d3.select(this).attr('r', 2).style("fill", "white").attr("stroke-width", 2);
