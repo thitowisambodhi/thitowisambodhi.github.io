@@ -25,43 +25,25 @@ var margin = {top: 10, right: 30, bottom: 20, left: 50},
 jan_url= "https://thitowisambodhi.github.io/d3/data_jan.csv"
 mar_url= "https://thitowisambodhi.github.io/d3/data_mar.csv"
 jun_url= "https://thitowisambodhi.github.io/d3/data_jun.csv"
-function bar_plot(url){
-  // append the svg object to the body of the page
-  var svg = d3.select("#my_dataviz")
-    .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
 
-  //d3.selectAll("svg > *").remove();
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
 
-  // Initialize the X axis
-            var x = d3.scaleBand()
-              .range([ 0, width ])
-              .padding(0.2);
-            var xAxis = svg.append("g")
-              .attr("transform", "translate(0," + height + ")")
-
-  // Initialize the Y axis
-            var y = d3.scaleLinear()
-              .range([ height, 0]);
-            var yAxis = svg.append("g")
-              .attr("class", "myYaxis")
-
-    d3.csv(url, function(data) {
-
-
-    // List of subgroups = header of the csv files = cities here
-    var subgroups = data.columns.slice(1)
+d3.csv(jan_url, function(data){
+  // List of subgroups = header of the csv files = cities here
+  var subgroups = data.columns.slice(1)
     // List of groups = cuisine type here = value of the first column called group -> I show them on the X axis
-    var groups = d3.map(data, function(d){return(d.City)}).keys()
+var groups = d3.map(data, function(d){return(d.City)}).keys()
     // Add X axis
     var x = d3.scaleBand()
         .domain(groups)
         .range([0, width])
-        .padding([0.2])
+        .padding([0.2]);
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x).tickSize(0));
@@ -79,9 +61,37 @@ function bar_plot(url){
     // color palette = one color per subgroup
     var color = d3.scaleOrdinal()
       .domain(subgroups)
-      .range(['#FD7E14', '#999999', '#CCCCCC'])
-  //    .range(['#FD7E14', '#999999', '#CCCCCC'])
+      .range(['#FD7E14', '#999999', '#CCCCCC'])})
 
+function bar_plot(url){
+  // append the svg object to the body of the page
+
+  //d3.selectAll("svg > *").remove();
+
+    d3.csv(url, function(data) {
+    // List of subgroups = header of the csv files = cities here
+    var subgroups = data.columns.slice(1)
+
+    // List of groups = cuisine type here = value of the first column called group -> I show them on the X axis
+    var groups = d3.map(data, function(d){return(d.City)}).keys()
+    // Add X axis
+    var x = d3.scaleBand()
+        .domain(groups)
+        .range([0, width])
+        .padding([0.2])
+    // Add Y axis
+    var y = d3.scaleLinear()
+      .domain([0, 600])
+      .range([ height, 0 ]);
+    // Another scale for subgroup position?
+    var xSubgroup = d3.scaleBand()
+      .domain(subgroups)
+      .range([0, x.bandwidth()])
+      .padding([0.05])
+    // color palette = one color per subgroup
+    var color = d3.scaleOrdinal()
+      .domain(subgroups)
+      .range(['#FD7E14', '#999999', '#CCCCCC'])
 
     // Show the bars
     svg.append("g")
@@ -100,48 +110,48 @@ function bar_plot(url){
         .attr("width", xSubgroup.bandwidth())
         .attr("height", function(d) { return height - y(d.value); })
         .attr("fill", function(d) { return color(d.key); });
-
-        // text label for the y axis
-        svg.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 0 - margin.left)
-            .attr("x",0 - (height / 2))
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .style("font", "11px sans-serif")
-            .text("Number of open restaurants");
-
-
-        //Creating legend
-        // select the svg area
-svg.append("g")
-
-                // Handmade legend
-        svg.append("circle").attr("cx",width - 10).attr("cy",height - 350).attr("r", 6).style("fill", "#FD7E14")
-        svg.append("circle").attr("cx",width - 10).attr("cy",height - 330).attr("r", 6).style("fill", "#999999")
-        svg.append("circle").attr("cx",width - 10).attr("cy",height - 310).attr("r", 6).style("fill", "#cccccc")
-
-        svg.append("text").attr("x", width - 20).attr("y", height - 350).text("Chinese restaurants").style("font", "10px sans-serif").attr("text-anchor","end").attr("alignment-baseline","middle")
-        svg.append("text").attr("x", width - 20).attr("y", height - 330).text("Other Asian restaurants").style("font", "10px sans-serif").attr("text-anchor","end").attr("alignment-baseline","middle")
-        svg.append("text").attr("x", width - 20).attr("y", height - 310).text("Non-Asian restaurants").style("font", "10px sans-serif").attr("text-anchor","end").attr("alignment-baseline","middle")
-
-
       });
 };
+
+// text label for the y axis
+svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x",0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .style("font", "11px sans-serif")
+    .text("Number of open restaurants");
+
+
+//Creating legend
+// select the svg area
+svg.append("g")
+
+        // Handmade legend
+svg.append("circle").attr("cx",width - 10).attr("cy",height - 350).attr("r", 6).style("fill", "#FD7E14")
+svg.append("circle").attr("cx",width - 10).attr("cy",height - 330).attr("r", 6).style("fill", "#999999")
+svg.append("circle").attr("cx",width - 10).attr("cy",height - 310).attr("r", 6).style("fill", "#cccccc")
+
+svg.append("text").attr("x", width - 20).attr("y", height - 350).text("Chinese restaurants").style("font", "10px sans-serif").attr("text-anchor","end").attr("alignment-baseline","middle")
+svg.append("text").attr("x", width - 20).attr("y", height - 330).text("Other Asian restaurants").style("font", "10px sans-serif").attr("text-anchor","end").attr("alignment-baseline","middle")
+svg.append("text").attr("x", width - 20).attr("y", height - 310).text("Non-Asian restaurants").style("font", "10px sans-serif").attr("text-anchor","end").attr("alignment-baseline","middle")
+
+
 d3.select("#jan2020").on("click", function(){
-  d3.selectAll("#my_dataviz > *").remove();
+  d3.selectAll("rect").transition().attr("opacity",0);
 
   bar_plot(jan_url)
 });
 
 d3.select("#mar2020").on("click", function(){
-  d3.selectAll("#my_dataviz > *").remove();
+  d3.selectAll("rect").transition().attr("opacity",0);
 
   bar_plot(mar_url)
 });
 
 d3.select("#jun2020").on("click", function(){
-  d3.selectAll("#my_dataviz > *").remove();
+  d3.selectAll("rect").transition().attr("opacity",0);
 
   bar_plot(jun_url)
 });
