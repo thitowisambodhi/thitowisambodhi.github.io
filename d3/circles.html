@@ -20,18 +20,18 @@
   	</div>
   <script type="text/javascript">
   // Width and height of the SVG object
-    let w = 800;
+    let w = 960;
     let h = 400;
 
   // Circle radius of Chinatown's performance
-  var all_jan = 100;
-  var m_mar = 88;
-  var m_jun = 86;
-  var b_mar = 86;
-  var b_jun = 93;
-  var f_mar = 76
-  var f_jun = 79;
-  var margin = {top: 20, right: 160, bottom: 35, left: 30};
+  var all_jan = 100*1.4;
+  var m_mar = 88*1.4;
+  var m_jun = 86*1.4;
+  var b_mar = 86*1.4;
+  var b_jun = 93*1.4;
+  var f_mar = 76*1.4;
+  var f_jun = 79*1.4;
+  var margin = {top: 20, right: 30, bottom: 35, left: 30};
 
       //Make an SVG Container
       var svgContainer = d3.select("div#main")
@@ -49,14 +49,14 @@
       .text("Manhattan");
       svgContainer
       .append("text")
-      .attr("x", 380)
+      .attr("x", w/2)
       .attr("y", all_jan + margin.top)
       .style("font", "11px sans-serif")
       .attr("text-anchor","middle")
       .text("Sunset Park, Brooklyn");
       svgContainer
       .append("text")
-      .attr("x", 630)
+      .attr("x", w - all_jan - margin.right)
       .attr("y", all_jan + margin.top)
       .style("font", "11px sans-serif")
       .attr("text-anchor","middle")
@@ -66,7 +66,7 @@
       var m_m_text = svgContainer
       .append("text")
       .attr("x", all_jan + margin.left)
-      .attr("y", all_jan + margin.top * 7)
+      .attr("y", h - margin.bottom*2.5)
       .attr("text-anchor","middle")
       .style("font", "11px sans-serif")
       .text("88% Chinese restaurants were open in March")
@@ -74,8 +74,8 @@
 
       var b_m_text = svgContainer
       .append("text")
-      .attr("x", 380)
-      .attr("y", all_jan + margin.top * 7)
+      .attr("x", w/2)
+      .attr("y", h - margin.bottom*2.5)
       .style("font", "11px sans-serif")
       .attr("text-anchor","middle")
       .text("86% Chinese restaurants were open in March")
@@ -83,8 +83,8 @@
 
       var f_m_text = svgContainer
       .append("text")
-      .attr("x", 630)
-      .attr("y", all_jan + margin.top * 7)
+      .attr("x", w - all_jan - margin.right)
+      .attr("y", h - margin.bottom*2.5)
       .style("font", "11px sans-serif")
       .attr("text-anchor","middle")
       .text("76% Chinese restaurants were open in March")
@@ -94,7 +94,7 @@
             var m_j_text = svgContainer
             .append("text")
             .attr("x", all_jan + margin.left)
-            .attr("y", all_jan + margin.top * 7.6)
+            .attr("y", h - margin.bottom*2)
             .attr("text-anchor","middle")
             .style("font", "11px sans-serif")
             .text("86% Chinese restaurants were open in June")
@@ -103,8 +103,8 @@
 
             var b_j_text = svgContainer
             .append("text")
-            .attr("x", 380)
-            .attr("y", all_jan + margin.top * 7.6)
+            .attr("x", w/2)
+            .attr("y", h - margin.bottom*2)
             .style("font", "11px sans-serif")
             .attr("text-anchor","middle")
             .text("93% Chinese restaurants were open in June")
@@ -114,8 +114,8 @@
 
             var f_j_text = svgContainer
             .append("text")
-            .attr("x", 630)
-            .attr("y", all_jan + margin.top * 7.6)
+            .attr("x", w - all_jan - margin.right)
+            .attr("y", h - margin.bottom*2)
             .style("font", "11px sans-serif")
             .attr("text-anchor","middle")
             .text("79% Chinese restaurants were open in June")
@@ -151,21 +151,21 @@
 
         // Cerating Brooklyn circles
         var circ_b_jan = svgContainer.append("circle")
-       	 .attr("cx", 380)
+       	 .attr("cx", w/2)
        	 .attr("cy", all_jan + margin.top)
        	 .attr("r", all_jan)
          .attr("fill", "orange")
          .attr("opacity", 0.2);
 
          var circ_b_mar = svgContainer.append("circle")
-        	 .attr("cx", 380)
+        	 .attr("cx",w/2)
         	 .attr("cy", all_jan + margin.top)
         	 .attr("r", 0)
            .attr("fill", "orange")
            .attr("opacity", 0.3);
 
          var circ_b_jun = svgContainer.append("circle")
-      	  .attr("cx", 380)
+      	  .attr("cx",w/2)
           .attr("cy", all_jan + margin.top)
           .attr("r", 0)
           .attr("stroke", "green")
@@ -174,21 +174,21 @@
 
           // Cerating Flushing circles
           var circ_f_jan = svgContainer.append("circle")
-         	 .attr("cx", 630)
+         	 .attr("cx", w - all_jan - margin.right)
          	 .attr("cy", all_jan + margin.top)
          	 .attr("r", all_jan)
            .attr("fill", "orange")
            .attr("opacity", 0.2);
 
            var circ_f_mar = svgContainer.append("circle")
-          	 .attr("cx", 630)
+          	 .attr("cx", w - all_jan - margin.right)
           	 .attr("cy", all_jan + margin.top)
           	 .attr("r", 0)
              .attr("fill", "orange")
              .attr("opacity", 0.3);
 
            var circ_f_jun = svgContainer.append("circle")
-        	  .attr("cx", 630)
+        	  .attr("cx", w - all_jan - margin.right)
             .attr("cy", all_jan + margin.top)
             .attr("r", 0)
             .attr("stroke", "green")
