@@ -65,10 +65,8 @@ var groups = d3.map(data, function(d){return(d.City)}).keys()
 
 function bar_plot(url){
   // append the svg object to the body of the page
-
-  //d3.selectAll("svg > *").remove();
-
     d3.csv(url, function(data) {
+      
     // List of subgroups = header of the csv files = cities here
     var subgroups = data.columns.slice(1)
 
@@ -108,6 +106,8 @@ function bar_plot(url){
         .attr("x", function(d) { return xSubgroup(d.key); })
         .attr("y", function(d) { return y(d.value); })
         .attr("width", xSubgroup.bandwidth())
+        .transition()
+        .duration(1000)
         .attr("height", function(d) { return height - y(d.value); })
         .attr("fill", function(d) { return color(d.key); });
       });
@@ -139,19 +139,19 @@ svg.append("text").attr("x", width - 20).attr("y", height - 310).text("Non-Asian
 
 
 d3.select("#jan2020").on("click", function(){
-  d3.selectAll("rect").transition().attr("opacity",0);
+  d3.selectAll("rect").transition().duration(500).attr("height",0);
 
   bar_plot(jan_url)
 });
 
 d3.select("#mar2020").on("click", function(){
-  d3.selectAll("rect").transition().attr("opacity",0);
+  d3.selectAll("rect").transition().duration(500).attr("height",0);
 
   bar_plot(mar_url)
 });
 
 d3.select("#jun2020").on("click", function(){
-  d3.selectAll("rect").transition().attr("opacity",0);
+  d3.selectAll("rect").transition().duration(500).attr("height",0);
 
   bar_plot(jun_url)
 });
